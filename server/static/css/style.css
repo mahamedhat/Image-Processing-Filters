@@ -1,0 +1,145 @@
+body {
+    background: rgba(25, 44, 77, 0.854);
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.container{
+    background-color: rgb(238, 238, 238);
+    min-width: 98vh;
+    height: 95vh;
+    border-radius: 15px;
+    display: grid;
+    text-align: center;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "imgsection"
+    "filters";
+    grid-gap: 1rem;
+}
+#imgsection{
+    grid-area: imgsection;
+}
+#filters{
+    grid-area: filters;
+}
+#image {
+    width: 400px;
+    height: auto;
+}
+
+
+.image{
+    display: grid;
+    height: 280px;
+    width: 280px;
+    border: 1px solid black;
+    background-position: center;
+    background-size: cover;
+}
+
+
+#display_image1{
+    grid-area: display_image1;
+}
+
+#output{
+    grid-area: output;
+  }
+
+.import-btn {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5rem;
+    display: block;
+    max-width: 25%;
+    padding: 0.6rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    border: 5px #eee;
+    border-radius: 1.5rem;
+    background-color: #19345d;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+.import-btn:hover {
+background-color: #192639;
+color: #eee;
+}
+
+button {
+    text-align: center;
+    padding: 0.9rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    border: 5px #eee;
+    border-radius: 3.5rem;
+    background-color: #19345d;
+    color: white;
+    font-size: 0.9rem;
+}
+
+button:hover {
+    background-color: #192639;
+    color: #eee;
+}
+
+input[type="file"] {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    font-size: 0.8rem;
+  }
+
+
+  
+.section-container {
+    display: block;
+    width: 90%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.6rem;
+    background-color: #eee;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.9rem;
+    
+}
+#upload-image1-form{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "display_image1 output";
+    grid-gap: 1rem;
+}
+
+.filters{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+    "noise smoothing Edge";
+    grid-gap: 1rem;
+}
+
+select{
+    width: 150px !important;
+    margin-top: 5px;
+}
+
+
+

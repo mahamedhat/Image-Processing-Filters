@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Css -->
+    <link rel="stylesheet" href="../static/css/style.css">
+
+    <title>Filtering and Edge Detection</title>
+</head>
+
+
+<body>
+    <div class="container">
+        <div id="imgsection">
+            <label for="image_input1" class="import-btn">
+                <i class="fa fa-cloud-upload"></i> Upload image
+            </label>
+            <div class="section-container">
+                <form id="upload-image1-form" method="post" enctype="multipart/form-data">
+                    <input id="image_input1" type="file" name="Image_File1" accept="image/jpeg, image/png, image/jpg"></input>
+                    <div class="a">
+                        <p>Original</p>
+                        <div class = "image" id="display_image1"></div>
+                    </div>
+                    <div class="a">
+                        <p>Filtered</p>
+                        <div class = "image" id="output"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div id="noise">
+                <label for="standard-select">Add Noise</label>
+                <div class="select">
+                <select id="standard-select">
+                    <option value="None">None</option>
+                    <option value="Uniform"> Uniform</option>
+                    <option value="Gaussia">Gaussian</option>
+                    <option value="salt">salt & pepper</option>
+                </select>
+                </div>
+            </div>
+            <div id="smoothing">
+                <label for="standard-select">Add Smooth filter</label>
+                <div class="select">
+                <select id="standard-select">
+                    <option value="None">None</option>
+                    <option value="Average"> Average</option>
+                    <option value="Median">Median</option>
+                    <option value="Gaussian">Gaussian</option>
+                </select>
+                </div>
+            </div>
+            <div id="Edge">
+                <label for="standard-select">Edge Detection filter</label>
+                <div class="select">
+                <select id="standard-select">
+                    <option value="None">None</option>
+                    <option value="Sobel">Sobel</option>
+                    <option value="Robert">Robert</option>
+                    <option value="Prewitt">Prewitt</option>
+                    <option value="Canny">Canny</option>
+                </select>
+                </div>
+            </div>
+            
+            
+        </div>
+
+    </div>
+
+    <div class="container">
+
+    </div>
+
+
+
+
+    <script src="../static/js/main.js"></script>
+</body>
+</html>
