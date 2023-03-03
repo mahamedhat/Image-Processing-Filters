@@ -169,7 +169,11 @@ select{
     background-color: #19345d;
     color: white;
     font-size: 0.9rem;
-    transform: translate(-100px,-100px);
+    transform: translate(-100px,-800px);
+}
+
+.hybrid{
+    transform: translateY(-40px);
 }
 
 
