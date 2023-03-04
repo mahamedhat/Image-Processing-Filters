@@ -25,11 +25,11 @@
                 <form id="upload-image1-form" method="post" enctype="multipart/form-data">
                     <input id="image_input1" type="file" name="Image_File1" accept="image/jpeg, image/png, image/jpg"></input>
                     <div class="a">
-                        <p>Original</p>
+                        <h3>Original</h3>
                         <div class = "image" id="display_image1"></div>
                     </div>
                     <div class="a">
-                        <p>Filtered</p>
+                        <h3>Filtered</h3>
                         <div class = "image" id="output"></div>
                     </div>
                 </form>
@@ -78,7 +78,26 @@
     </div>
 
     <div class="container">
-
+        <div class="a">
+            <!-- <button type="button">Show Histogram</button> -->
+            <h3>Histogram</h3>
+            <div class = "image2" id="display_image1"></div>
+        </div>
+        <div class="a">
+        <div class="hybrid">
+            <h3>Hybrid image </h3>
+            <label for="image_input1" class="import-btn2">
+                <i class="fa fa-cloud-upload"></i> Upload 1st image
+            </label>
+            
+            <label for="image_input1" class="import-btn2">
+                <i class="fa fa-cloud-upload"></i> Upload 2nd image
+            </label>
+        </div>
+            <!-- <button type="button">Show Hybrid Image</button> -->
+    
+            <div class = "image2" id="output"></div>
+        </div>
     </div>
 
 

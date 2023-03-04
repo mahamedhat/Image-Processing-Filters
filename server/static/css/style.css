@@ -41,8 +41,20 @@ body {
     border: 1px solid black;
     background-position: center;
     background-size: cover;
+    border-radius: 15px;
+    transform: translateX(40px);
 }
 
+.image2{
+    display: grid;
+    height: 260px;
+    width: 480px;
+    border: 1px solid black;
+    background-position: center;
+    background-size: cover;
+    transform: translateX(140px);
+    border-radius: 15px;
+}
 
 #display_image1{
     grid-area: display_image1;
@@ -73,6 +85,12 @@ body {
 background-color: #192639;
 color: #eee;
 }
+
+.import-btn2:hover {
+    background-color: #192639;
+    color: #eee;
+}
+
 
 button {
     text-align: center;
@@ -140,6 +158,24 @@ select{
     width: 150px !important;
     margin-top: 5px;
 }
+
+.import-btn2 {
+    text-align: center;
+    padding: 0.9rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    border: 5px #eee;
+    border-radius: 3.5rem;
+    background-color: #19345d;
+    color: white;
+    font-size: 0.9rem;
+    transform: translate(-100px,-800px);
+}
+
+.hybrid{
+    transform: translateY(-40px);
+}
+
 
 
 
