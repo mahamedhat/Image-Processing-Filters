@@ -208,30 +208,20 @@ def IdealHighPass(img):
     g = np.abs(np.fft.ifft2(G))
     return g
 
+
+
 def sobel(img):
-
-    # sobel kernel
-    sobel_x = np.array([[-1, -2, -1],
-                        [ 0,  0,  0],
-                        [ 1,  2,  1]])
-
-    sobel_y = np.array([[-1, 0, 1],
-                        [-2, 0, 2],
-                        [-1, 0, 1]])
-    # partial derivative in x-direction
-    edge_x = cv2.filter2D(src=img, ddepth=-1, kernel=sobel_x)
-    edge_x[edge_x != 0] = 255
-
-
-    # partial derivative in y-direction
-    edge_y = cv2.filter2D(src=img, ddepth=-1, kernel=sobel_y)
-    edge_y[edge_y != 0] = 255
-
-
-    # combinte the x and y edge
-    add_edge = edge_x + edge_y
-    add_edge[add_edge != 0] = 255
-    return add_edge
+#     img=GaussianLowFilter(img)
+    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
+    Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+    
+    Ix = ndimage.filters.convolve(img, Kx)
+    Iy = ndimage.filters.convolve(img, Ky)
+    
+    G = np.hypot(Ix, Iy)
+    G = G / G.max() * 255
+    
+    return G
 
 def robert(img):
 
