@@ -7,6 +7,9 @@
 
     <!-- Css -->
     <link rel="stylesheet" href="../static/css/style.css">
+    <!-- JS -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 
     <title>Filtering and Edge Detection</title>
 </head>
@@ -37,10 +40,10 @@
             <div id="noise">
                 <label for="standard-select">Add Noise</label>
                 <div class="select">
-                <select id="standard-select">
+                <select id="noiseType">
                     <option value="None">None</option>
                     <option value="Uniform"> Uniform</option>
-                    <option value="Gaussia">Gaussian</option>
+                    <option value="Gaussian">Gaussian</option>
                     <option value="salt">salt & pepper</option>
                 </select>
                 </div>
@@ -48,7 +51,7 @@
             <div id="smoothing">
                 <label for="standard-select">Add Smooth filter</label>
                 <div class="select">
-                <select id="standard-select">
+                <select id="smoothingType">
                     <option value="None">None</option>
                     <option value="Average"> Average</option>
                     <option value="Median">Median</option>
@@ -59,7 +62,7 @@
             <div id="Edge">
                 <label for="standard-select">Edge Detection filter</label>
                 <div class="select">
-                <select id="standard-select">
+                <select id="edgeType">
                     <option value="None">None</option>
                     <option value="Sobel">Sobel</option>
                     <option value="Robert">Robert</option>

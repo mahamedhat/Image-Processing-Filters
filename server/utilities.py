@@ -21,13 +21,6 @@ import random
 
 # ------------------ IMAGE FUNCTIONS -------------------------------------
 
-# function for displaying image
-def display(img):
-    plt.figure(figsize=(5,5))
-    plt.imshow(img, cmap='gray')
-    plt.axis('off')
-    plt.show()
-
 #function gray scale 
 def rgbtogray(image):
     r,g,b=image[:,:,0],image[:,:,1],image[:,:,2]
@@ -36,7 +29,7 @@ def rgbtogray(image):
 # -----------------------NOISE ------------------------------------------
 
 
-def salt_and_paper(img):
+def salt_and_pepper(img):
     row , col = img.shape
     g = np.zeros((row,col), dtype=np.float32)
     salt=0.95
@@ -62,19 +55,28 @@ def uniform_noise(img):
     for i in range(row):
         for j in range(col):
             uni[i][j] = np.random.uniform(low,high)
-    img=img+uni
+    img= img + uni
+
     return img
 
-def gaussion_noise(img):
+
+
+def gaussian_noise(img):
+
     row,col=img.shape
     mean=0
     var=0.1
     sigma=var**0.5
     gaussion_noise = np.random.normal(loc=mean, scale=sigma, size=(row,col))
     img=img+gaussion_noise
+
     return img
 
+# ------------------ LOW PASS FILTER -------------------------------------
+
+
 def median_filter(noise_image):
+
     row,col=noise_image.shape
     filtered_image=np.zeros([row,col])
     #loop on every window 3*3 in the image
@@ -94,10 +96,9 @@ def median_filter(noise_image):
     filtered_image = filtered_image.astype(np.uint8)
     return filtered_image
 
-# ------------------ LOW PASS FILTER -------------------------------------
 
 def GaussianLowFilter(img):
-    
+
     # transform the image into frequency domain, f --> F
     F = np.fft.fft2(img)
     Fshift = np.fft.fftshift(F)
@@ -143,6 +144,7 @@ def idealLowPass(img):
     return g
 
 def meanLowPass(img):
+
     # Obtain number of rows and columns 
     # of the image
     m, n = img.shape
@@ -192,6 +194,7 @@ def IdealHighPass(img):
     return g
 
 def sobel(img):
+
     # sobel kernel
     sobel_x = np.array([[-1, -2, -1],
                         [ 0,  0,  0],
@@ -216,6 +219,7 @@ def sobel(img):
     return add_edge
 
 def robert(img):
+
     roberts_cross_v = np.array( [[ 0, 0, 0 ],
                              [ 0, 1, 0 ],
                              [ 0, 0,-1 ]] )
@@ -229,6 +233,7 @@ def robert(img):
     return edged_img
 
 def prewit(img):
+
     #define horizontal and Vertical sobel kernels
     Hx = np.array([[-1, 0, 1],[-1, 0, 1],[-1, 0, 1]])
     Hy = np.array([[-1, -1, -1],[0, 0, 0],[1, 1, 1]])
