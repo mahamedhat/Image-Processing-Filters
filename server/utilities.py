@@ -26,8 +26,24 @@ def rgbtogray(image):
     r,g,b=image[:,:,0],image[:,:,1],image[:,:,2]
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
     return gray
-# -----------------------NOISE ------------------------------------------
+    # img=np.array(Image.open(image)) #Input - Color image
+    # gray_img=img.copy()
 
+    # for clr in range(img.shape[2]):
+    #     gray_img[:,:,clr]=img.mean(axis=2) #Take mean of all 3 color channels of each pixel and assign it back to that pixel(in copied image)
+
+    # plt.imshow(gray_img) #Result - Grayscale image
+    # return gray_img
+# -----------------------NOISE ------------------------------------------
+def rgb2gray(image):
+    img=np.array(Image.open(image)) #Input - Color image
+    gray_img=img.copy()
+
+    for clr in range(img.shape[2]):
+        gray_img[:,:,clr]=img.mean(axis=2) #Take mean of all 3 color channels of each pixel and assign it back to that pixel(in copied image)
+
+    plt.imshow(gray_img) #Result - Grayscale image
+    return gray_img
 
 def salt_and_pepper(img):
     row , col = img.shape
@@ -55,20 +71,19 @@ def uniform_noise(img):
     for i in range(row):
         for j in range(col):
             uni[i][j] = np.random.uniform(low,high)
-    img= img + uni
+    img = img + uni
 
     return img
 
 
-
 def gaussian_noise(img):
 
-    row,col=img.shape
-    mean=0
-    var=0.1
-    sigma=var**0.5
+    row,col = img.shape
+    mean = 0
+    var = 0.1
+    sigma = var**0.5
     gaussion_noise = np.random.normal(loc=mean, scale=sigma, size=(row,col))
-    img=img+gaussion_noise
+    img = img + gaussion_noise
 
     return img
 
@@ -193,30 +208,20 @@ def IdealHighPass(img):
     g = np.abs(np.fft.ifft2(G))
     return g
 
+
+
 def sobel(img):
-
-    # sobel kernel
-    sobel_x = np.array([[-1, -2, -1],
-                        [ 0,  0,  0],
-                        [ 1,  2,  1]])
-
-    sobel_y = np.array([[-1, 0, 1],
-                        [-2, 0, 2],
-                        [-1, 0, 1]])
-    # partial derivative in x-direction
-    edge_x = cv2.filter2D(src=img, ddepth=-1, kernel=sobel_x)
-    edge_x[edge_x != 0] = 255
-
-
-    # partial derivative in y-direction
-    edge_y = cv2.filter2D(src=img, ddepth=-1, kernel=sobel_y)
-    edge_y[edge_y != 0] = 255
-
-
-    # combinte the x and y edge
-    add_edge = edge_x + edge_y
-    add_edge[add_edge != 0] = 255
-    return add_edge
+#     img=GaussianLowFilter(img)
+    Kx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
+    Ky = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
+    
+    Ix = ndimage.filters.convolve(img, Kx)
+    Iy = ndimage.filters.convolve(img, Ky)
+    
+    G = np.hypot(Ix, Iy)
+    G = G / G.max() * 255
+    
+    return G
 
 def robert(img):
 
@@ -246,7 +251,7 @@ def prewit(img):
     pre_out = (pre_out / np.max(pre_out)) * 255
     return pre_out
 
-# ------------------ APPLYING FILTER -------------------------------------
+# ------------------ CONVOLUTION -------------------------------------
 
 def convolve(X, F):
     # height and width of the image

@@ -68,11 +68,11 @@ def imgProcessing():
                 output = img
                 cv2.imwrite('server//static//assests//output.jpg', output)
             else:
-                if(data[2]=='Sobel'):
+                if(data[3]=='Sobel'):
                     output = fn.sobel(img)
-                elif(data[2]=='Robert'):
+                elif(data[3]=='Robert'):
                     output = fn.robert(img)
-                elif(data[2]=='Prewitt'):
+                elif(data[3]=='Prewitt'):
                     output = fn.prewit(img)
                 else:
                     kernal_size = 3
