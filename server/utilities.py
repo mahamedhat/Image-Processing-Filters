@@ -16,6 +16,7 @@ from skimage.exposure import histogram, cumulative_distribution
 from IPython.display import display, Math, Latex
 import matplotlib.image as mpimg
 import random
+import copy
 
 
 
@@ -478,28 +479,40 @@ def gradient_estimate(image, gradient_estimation_filter_type):
 
     return (G, theta)
 
-# step 3 : gradient estimation
+# step 4 : non-maxima suppression to thin out the edges
 
-def gradient_estimate(image, gradient_estimation_filter_type):
+def non_maxima_suppression(image, gradient_direction):
+    rows_count = len(image)
+    columns_count = len(image[0])
 
-    if (gradient_estimation_filter_type=="sobel"):
-        Mx = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
-        My = np.array([[1, 2, 1], [0, 0, 0], [-1, -2, -1]], np.float32)
-    elif (gradient_estimation_filter_type=="prewitt"):
-        Mx = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]], np.float32)
-        My = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]], np.float32)
-    else:
-        Mx = np.array([[0, 1], [-1, 0]], np.float32)
-        My = np.array([[1, 0], [0, -1]], np.float32)
+    output_image = np.zeros((rows_count, columns_count), dtype=np.int32)
+    theta = gradient_direction * 180. / np.pi
+    theta[theta < 0] += 180
 
-    X = apply_filtering(image, Mx)
-    Y = apply_filtering(image, My)
+    
+    for i in range(1, rows_count-1):
+        for j in range(1, columns_count-1):
+            next = 255
+            previous = 255
+            if (0 <= theta[i,j] < 22.5) or (157.5 <= theta[i,j] <= 180):
+                next = image[i, j+1]
+                previous = image[i, j-1]
+            elif (22.5 <= theta[i,j] < 67.5):
+                next = image[i+1, j-1]
+                previous = image[i-1, j+1]
+            elif (67.5 <= theta[i,j] < 112.5):
+                next = image[i+1, j]
+                previous = image[i-1, j]
+            elif (112.5 <= theta[i,j] < 157.5):
+                next = image[i-1, j-1]
+                previous = image[i+1, j+1]
 
-    G = np.hypot(X, Y)
-    G = G / G.max() * 255
-    theta = np.arctan2(Y, X)
-
-    return (G, theta)
+            if (image[i,j] >= next) and (image[i,j] >= previous):
+                output_image[i,j] = image[i,j]
+            else:
+                output_image[i,j] = 0
+    
+    return output_image
 
 def double_threshold(image, low_threshold_ratio, high_threshold_ratio):
     
@@ -550,3 +563,28 @@ def hysteresis_edge_track(image, weak, strong=255):
                 else:
                     image[i, j] = 0
     return image
+
+def canny(img):
+    kernal_size = 3
+    low_threshold_ratio = 0.05
+    high_threshold_ratio = 0.09
+    gradient_estimation_filter_type = "sobel"
+   
+
+    # step 2 : apply gaussian kernal to filter noise
+    kernal = get_gaussian_kernel(kernal_size)
+    image_without_noise = apply_filtering(img.tolist(), kernal)
+
+    # step 3 : gradient estimation
+    assert (gradient_estimation_filter_type in ["sobel", "prewitt", "robert"]), "gradient estimation filter type should be [\"prewitt\", \"sobel\", \"robert\"]"
+    G, theta = gradient_estimate(image_without_noise, gradient_estimation_filter_type)
+
+    # step 4 : non maxima suppression
+    image_with_thin_edges = non_maxima_suppression(G, theta)
+
+    # step 5 : double threshold
+    final_image, weak, strong = double_threshold(image_with_thin_edges, low_threshold_ratio, high_threshold_ratio)
+
+    # edge tracking with hysteresis
+    img = hysteresis_edge_track(final_image, weak, strong=255)
+    return img
