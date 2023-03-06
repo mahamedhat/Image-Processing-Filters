@@ -74,7 +74,26 @@ def imgProcessing():
                     output = fn.robert(img)
                 elif(data[2]=='Prewitt'):
                     output = fn.prewit(img)
-                else:return[]    
+                else:
+                    kernal_size = 3
+                    low_threshold_ratio = 0.05
+                    high_threshold_ratio = 0.09
+                    gradient_estimation_filter_type = "sobel"
+                    kernal = fn.get_gaussian_kernel(kernal_size)
+                    image_without_noise = fn.apply_filtering(img.tolist(), kernal)
+
+                    # step 3 : gradient estimation
+                    assert (gradient_estimation_filter_type in ["sobel", "prewitt", "robert"]), "gradient estimation filter type should be [\"prewitt\", \"sobel\", \"robert\"]"
+                    G, theta = fn.gradient_estimate(image_without_noise, gradient_estimation_filter_type)
+
+                    # step 4 : non maxima suppression
+                    image_with_thin_edges = fn.non_maxima_suppression(G, theta)
+
+                    # step 5 : double threshold
+                    final_image, weak, strong = fn.double_threshold(image_with_thin_edges, low_threshold_ratio, high_threshold_ratio)
+
+                    # edge tracking with hysteresis
+                    output = fn.hysteresis_edge_track(final_image, weak, strong=255)   
                 cv2.imwrite('server//static//assests//output.jpg', output)    
             return []            
                  
