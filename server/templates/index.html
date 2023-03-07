@@ -77,27 +77,39 @@
 
     </div>
 
-    <div class="container">
-        <div class="a">
+    <div class="container2">
+        <div class="Histogram">
             <!-- <button type="button">Show Histogram</button> -->
             <h3>Histogram</h3>
-            <div class = "image2" id="display_image1"></div>
+            <div class = "image2" id="display_image2"></div>
         </div>
-        <div class="a">
-        <div class="hybrid">
-            <h3>Hybrid image </h3>
-            <label for="image_input1" class="import-btn2">
-                <i class="fa fa-cloud-upload"></i> Upload 1st image
+        <div id="hybrid">
+            <label for="hybrid_img1" class="import-btn2">
+                <i class="fa fa-cloud-upload"></i> Upload first image 
             </label>
-            
-            <label for="image_input1" class="import-btn2">
-                <i class="fa fa-cloud-upload"></i> Upload 2nd image
+            <label for="hybrid_img2" class="import-btn2">
+                <i class="fa fa-cloud-upload"></i> Upload second image 
             </label>
-        </div>
-            <!-- <button type="button">Show Hybrid Image</button> -->
-    
-            <div class = "image2" id="output"></div>
-        </div>
+            <div class="section-container">
+                <form id="upload-image2-form" method="post" enctype="multipart/form-data">
+                    <input id="hybrid_img1" type="file" name="hybrid_img1" accept="image/jpeg, image/png, image/jpg"></input>
+                    <!-- <input id="hybrid_img2" type="file" name="hybrid_img2" accept="image/jpeg, image/png, image/jpg"></input> -->
+                    <div class="a">
+                        <h3>Image 1</h3>
+                        <div class = "image" id="hybrid_image1"></div>
+                    </div>
+                    <div class="a">
+                        <h3>Image 2</h3>
+                        <div class = "image" id="hybrid_image2"></div>
+                    </div>
+                    <div class="a">
+                        <h3>Hybrid Image</h3>
+                        <div class = "image" id="hybrid_output"></div>
+                    </div>
+                </form>
+                <form id="upload-image3-form" method="post" enctype="multipart/form-data">
+                    <input id="hybrid_img2" type="file" name="hybrid_img2" accept="image/jpeg, image/png, image/jpg"></input></form>
+            </div>
     </div>
 
 

@@ -22,6 +22,20 @@ body {
     "filters";
     grid-gap: 1rem;
 }
+.container2{
+    background-color: rgb(238, 238, 238);
+    min-width: 98vh;
+    height: 95vh;
+    border-radius: 15px;
+    display: grid;
+    text-align: center;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+    "Histogram"
+    "hybrid";
+    grid-gap: 1rem;
+}
+
 #imgsection{
     grid-area: imgsection;
 }
@@ -42,7 +56,6 @@ body {
     background-position: center;
     background-size: cover;
     border-radius: 15px;
-    transform: translateX(40px);
 }
 
 .image2{
@@ -177,5 +190,31 @@ select{
 }
 
 
+#upload-image2-form{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr 1fr ;
+    grid-template-areas:
+    "hybrid_image1 hybrid_image2 hybrid_output";
+    grid-gap: 1rem;
+}
 
+#hybrid_image1{
+    grid-area: hybrid_image1;
+    height: 200px;
+    width: 200px;
 
+  }
+
+#hybrid_image2{
+    grid-area: hybrid_image2;
+    height: 200px;
+    width: 200px;
+
+}
+
+#hybrid_output{
+    grid-area: hybrid_output;
+    height: 200px;
+    width: 200px;
+  }

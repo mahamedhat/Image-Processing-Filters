@@ -11,10 +11,22 @@ from PIL import Image
 def uploadImage():
 
     if request.method == 'POST':
-            file1 = request.files["Image_File1"]
-            file1.save(os.path.join(
-                'server//static//assests//image1.jpg'))
-
+            try:
+                file1 = request.files["Image_File1"]
+                file1.save(os.path.join(
+                    'server/static/assests/Image1.jpg'))
+            except:
+                
+                try:
+                    file2 = request.files["hybrid_img1"]
+                    file2.save(os.path.join(
+                        'server/static/assests/hybridimg1.jpg'))
+                    hybrid()
+                except:
+                    file3 = request.files["hybrid_img2"]
+                    file3.save(os.path.join(
+                        'server/static/assests/hybridimg2.jpg')) 
+                    hybrid()  
     return []
 
 
@@ -76,3 +88,11 @@ def imgProcessing():
                 cv2.imwrite('server//static//assests//output.jpg', output)    
             return []            
                  
+def hybrid():
+    img1 = cv2.imread('server/static/assests/hybridimg1.jpg')
+    img2 = cv2.imread('server/static/assests/hybridimg2.jpg')
+
+    images=[img1 , img2]
+    final=fn.hybrid_image(images, [7,7], 1)
+    cv2.imwrite('server//static//assests//hybridoutput.jpg', final)    
+

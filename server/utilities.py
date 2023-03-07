@@ -588,3 +588,111 @@ def canny(img):
     # edge tracking with hysteresis
     img = hysteresis_edge_track(final_image, weak, strong=255)
     return img
+# ------------------ Hybrid image -------------------------------------
+def convolution(image, kernel):
+    """ This function executes the convolution between `img` and `kernel`.
+    """
+
+    # Flip template before convolution.
+    kernel = cv2.flip(kernel, -1)
+    # Get size of image and kernel. 3rd value of shape is colour channel.
+    (image_h, image_w) = image.shape[:2]
+    (kernel_h, kernel_w) = kernel.shape[:2]
+    (pad_h, pad_w) = (kernel_h // 2, kernel_w // 2)
+    # Create image to write to.
+    output = np.zeros(image.shape)
+    # Slide kernel across every pixel.
+    for y in range(pad_h, image_h - pad_h):
+        for x in range(pad_w, image_w - pad_w):
+            # If coloured, loop for colours.
+            for colour in range(image.shape[2]):
+                # Get center pixel.
+                center = image[
+                    y - pad_h : y + pad_h + 1, x - pad_w : x + pad_w + 1, colour
+                ]
+                # Perform convolution and map value to [0, 255].
+                # Write back value to output image.
+                output[y, x, colour] = (center * kernel).sum() / 255
+
+    # Return the result of the convolution.
+    return output
+
+
+def fourier(image, kernel):
+    """ Compute convolution between `img` and `kernel` using numpy's FFT.
+    """
+    # Get size of image and kernel.
+    (image_h, image_w) = image.shape[:2]
+    (kernel_h, kernel_w) = kernel.shape[:2]
+    # Apply padding to the kernel.
+    padded_kernel = np.zeros(image.shape[:2])
+    start_h = (image_h - kernel_h) // 2
+    start_w = (image_w - kernel_w) // 2
+    padded_kernel[start_h : start_h + kernel_h, start_w : start_w + kernel_w] = kernel
+    # Create image to write to.
+    output = np.zeros(image.shape)
+    # Run FFT on all 3 channels.
+    for colour in range(3):
+        Fi = np.fft.fft2(image[:, :, colour])
+        Fk = np.fft.fft2(padded_kernel)
+        # Inverse fourier.
+        output[:, :, colour] = np.fft.fftshift(np.fft.ifft2(Fi * Fk)) / 255
+
+    # Return the result of convolution.
+    return output
+
+
+
+def gaussian_blur(image, sigma, flag):
+    """ Builds a Gaussian kernel used to perform the LPF on an image.
+    """
+
+    # Calculate size of filter.
+    size = 8 * sigma + 1
+    if not size % 2:
+        size = size + 1
+
+    center = size // 2
+    kernel = np.zeros((size, size))
+
+    # Generate Gaussian blur.
+    for y in range(size):
+        for x in range(size):
+            diff = (y - center) ** 2 + (x - center) ** 2
+            kernel[y, x] = np.exp(-diff / (2 * sigma ** 2))
+
+    kernel = kernel / np.sum(kernel)
+
+    if flag:
+        return fourier(image, kernel)
+    else:
+        return convolution(image, kernel)
+    
+def low_pass(image, cutoff, flag):
+    """ Generate low pass filter of image.
+    """
+    return gaussian_blur(image, cutoff, flag)    
+
+
+def high_pass(image, cutoff, flag):
+    """ Generate high pass filter of image. This is simply the image minus its
+    low passed result.
+    """
+    return ((image) / 255) - low_pass(image, cutoff, flag)
+
+
+
+def hybrid_image(images, cutoff, flag):
+    """ Create a hybrid image by summing together the low and high frequency
+    images.
+    """
+    # Perform low pass filter and export.
+    low = low_pass(images[0], cutoff[0], flag)
+#     cv2.imwrite("low.jpg", low * 255)
+    # Perform high pass filter and export.
+    high = high_pass(images[1], cutoff[1], flag)
+#     cv2.imwrite("high.jpg", (high + 0.5) * 255)
+    
+    result = low + high 
+    print("Creating hybrid image...")
+    return result
