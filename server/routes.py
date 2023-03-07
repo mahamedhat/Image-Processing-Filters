@@ -3,6 +3,7 @@ from flask import request
 import os
 import cv2
 from PIL import Image
+import json
 
 
 
@@ -11,22 +12,21 @@ from PIL import Image
 def uploadImage():
 
     if request.method == 'POST':
-            try:
-                file1 = request.files["Image_File1"]
-                file1.save(os.path.join(
-                    'server/static/assests/Image1.jpg'))
-            except:
-                
-                try:
-                    file2 = request.files["hybrid_img1"]
-                    file2.save(os.path.join(
-                        'server/static/assests/hybridimg1.jpg'))
-                    hybrid()
-                except:
-                    file3 = request.files["hybrid_img2"]
-                    file3.save(os.path.join(
-                        'server/static/assests/hybridimg2.jpg')) 
-                    hybrid()  
+
+        file1 = request.files["Image_File1"]
+        file1.save(os.path.join(
+            'server/static/assests/Image1.jpg'))
+        img= cv2.imread('server//static//assests//image1.jpg')
+        img = fn.rgbtogray(img)
+        norm = fn.normalize(img)
+        cv2.imwrite('server//static//assests//normalize.jpg', norm)
+        eq = fn.equalization('server//static//assests//image1.jpg')
+        cv2.imwrite('server//static//assests//equalize.jpg', eq)
+        glbl = fn.globalThresholding(img,200)
+        cv2.imwrite('server//static//assests//global.jpg', glbl)
+        lcl = fn.localThresholding(img,40)
+        cv2.imwrite('server//static//assests//local.jpg', lcl)
+
     return []
 
 
@@ -56,7 +56,7 @@ def imgProcessing():
 
             img= cv2.imread('server//static//assests//output.jpg')
             img = fn.rgbtogray(img)
-
+            
             if (data[2]=='None'):
                 output = img
                 cv2.imwrite('server//static//assests//output.jpg', output)
@@ -85,14 +85,64 @@ def imgProcessing():
                     output = fn.prewit(img)
                 else:
                     output=fn.canny(img)
-                cv2.imwrite('server//static//assests//output.jpg', output)    
-            return []            
-                 
+                cv2.imwrite('server//static//assests//output.jpg', output)  
+
+            img= cv2.imread('server//static//assests//output.jpg')
+            img = fn.rgbtogray(img)                  
+            if (data[4]=='None'):
+                output = img
+                cv2.imwrite('server//static//assests//output.jpg', output)
+            else:
+                if(data[4]=="high"):
+                    output = fn.IdealHighPass(img)
+                elif(data[4]=="low"):
+                    output = fn.idealLowPass(img)
+                cv2.imwrite('server//static//assests//output.jpg', output)
+    
+
+            return data    
+
+
+
+
+
+
+
+
+@app.route('/hybrid' ,  methods=['POST'])                 
 def hybrid():
-    img1 = cv2.imread('server/static/assests/hybridimg1.jpg')
-    img2 = cv2.imread('server/static/assests/hybridimg2.jpg')
 
-    images=[img1 , img2]
-    final=fn.hybrid_image(images, [7,7], 1)
-    cv2.imwrite('server//static//assests//hybridoutput.jpg', final)    
+    if request.method == 'POST':
+        jsonData = request.get_json()  
+        data = jsonData['formElement']
 
+        if (data[0]== True and data[1]== True):
+                img1 = cv2.imread('server/static/assests/hybridimg1.jpg')
+                img2 = cv2.imread('server/static/assests/hybridimg2.jpg')
+
+                images=[img1 , img2]
+                final=fn.hybrid_image(images, [7,7], 1)
+                cv2.imwrite('server//static//assests//hybridoutput.jpg', final*255)  
+                return data
+                            
+        else: 
+            return  data
+
+
+
+
+@app.route('/uploadHybrid',  methods=['POST'])
+def uploadHybrid():
+
+    if request.method == 'POST':
+                
+        try:
+            file2 = request.files["hybrid_img1"]
+            file2.save(os.path.join(
+                'server/static/assests/hybridimg1.jpg'))
+        except:
+            file3 = request.files["hybrid_img2"]
+            file3.save(os.path.join(
+                'server/static/assests/hybridimg2.jpg')) 
+
+    return []

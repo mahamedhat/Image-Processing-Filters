@@ -64,24 +64,22 @@ def salt_and_pepper(img):
 
 #low : lower boundry of output interval
 #high: Upper boundary of the output interval. All values generated will be less than or equal to high. The high limit may be included in the returned array of floats due to floating-point rounding in the equation low + (high-low) * random_sample(). The default value is 1.0.
-def uniform_noise(img):
-    row,col=img.shape
-    low = 0
-    high = 1
-    uni = np.zeros((row,col), dtype=np.float64)
-    for i in range(row):
-        for j in range(col):
-            uni[i][j] = np.random.uniform(low,high)
-    img = img + uni
-
-    return img
+def uniform_noise(img): 
+    row,col=img.shape 
+    uni_noise=np.zeros((row,col),dtype=np.uint8) 
+    # fills array with uniformly-distributed random numbers from the range [low, high) cv2.randu(inputoutputarray,low,high) 
+    cv2.randu(uni_noise,0,255) 
+ 
+    uni_noise=(uni_noise*0.5).astype(np.uint8) 
+    un_img= img + uni_noise 
+    return un_img
 
 
 def gaussian_noise(img):
 
     row,col = img.shape
     mean = 0
-    var = 0.1
+    var = 300
     sigma = var**0.5
     gaussion_noise = np.random.normal(loc=mean, scale=sigma, size=(row,col))
     img = img + gaussion_noise
@@ -134,6 +132,32 @@ def GaussianLowFilter(img):
     g = np.abs(np.fft.ifft2(G))
     return g
 
+
+
+def meanLowPass(img):
+
+    # Obtain number of rows and columns 
+    # of the image
+    m, n = img.shape
+
+    # Develop Averaging filter(3, 3) mask
+    mask = np.ones([3, 3], dtype = int)
+    mask = mask / 9
+
+    # Convolve the 3X3 mask over the image 
+    img_new = np.zeros([m, n])
+
+    for i in range(1, m-1):
+        for j in range(1, n-1):
+            temp = img[i-1, j-1]*mask[0, 0]+img[i-1, j]*mask[0, 1]+img[i-1, j + 1]*mask[0, 2]+img[i, j-1]*mask[1, 0]+ img[i, j]*mask[1, 1]+img[i, j + 1]*mask[1, 2]+img[i + 1, j-1]*mask[2, 0]+img[i + 1, j]*mask[2, 1]+img[i + 1, j + 1]*mask[2, 2]
+
+            img_new[i, j]= temp
+
+    img_new = img_new.astype(np.uint8)
+    return img_new
+
+
+# ------------------ Frequency domain FILTER -------------------------------------
 def idealLowPass(img):
         # image in frequency domain
     F = np.fft.fft2(img)
@@ -159,30 +183,7 @@ def idealLowPass(img):
     g = np.abs(np.fft.ifft2(G))
     return g
 
-def meanLowPass(img):
 
-    # Obtain number of rows and columns 
-    # of the image
-    m, n = img.shape
-
-    # Develop Averaging filter(3, 3) mask
-    mask = np.ones([3, 3], dtype = int)
-    mask = mask / 9
-
-    # Convolve the 3X3 mask over the image 
-    img_new = np.zeros([m, n])
-
-    for i in range(1, m-1):
-        for j in range(1, n-1):
-            temp = img[i-1, j-1]*mask[0, 0]+img[i-1, j]*mask[0, 1]+img[i-1, j + 1]*mask[0, 2]+img[i, j-1]*mask[1, 0]+ img[i, j]*mask[1, 1]+img[i, j + 1]*mask[1, 2]+img[i + 1, j-1]*mask[2, 0]+img[i + 1, j]*mask[2, 1]+img[i + 1, j + 1]*mask[2, 2]
-
-            img_new[i, j]= temp
-
-    img_new = img_new.astype(np.uint8)
-    return img_new
-
-
-# ------------------ HIGH PASS FILTER -------------------------------------
 
 def IdealHighPass(img):
     # image in frequency domain
@@ -209,6 +210,7 @@ def IdealHighPass(img):
     g = np.abs(np.fft.ifft2(G))
     return g
 
+# ------------------ HIGH PASS FILTER -------------------------------------
 
 
 def sobel(img):
@@ -330,6 +332,7 @@ def cumsum(a):
 # ------------------ EQUALIZATION AND NORMALIZATION -------------------------------------
 
 def equalization(path):
+
     img = Image.open(path)
 
     # convert image into a numpy array
@@ -353,29 +356,16 @@ def equalization(path):
     img_new = cs[flat]
     # put array back into original shape since we flattened it
     img_new = np.reshape(img_new, img.shape)
-    # set up side-by-side image display
-    fig = plt.figure()
-    fig.set_figheight(15)
-    fig.set_figwidth(15)
-
-    fig.add_subplot(1,2,1)
-    plt.imshow(img, cmap='gray')
-
-    # display the new image
-    fig.add_subplot(1,2,2)
-    plt.imshow(img_new, cmap='gray')
-
-    plt.show(block=True)    
+    return img_new
 
     
-def normalize(path):
-    img = cv2.imread(path)
-    norm_img = np.zeros((800,800))
-    final_img = cv2.normalize(img,  norm_img, 0, 255, cv2.NORM_MINMAX)
-    cv2.imshow('Normalized Image', final_img)
-    cv2.imwrite('city_normalized.jpg', final_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+def normalize(img):
+    # norm_img = np.zeros((800,800))
+    # final_img = cv2.normalize(img,  norm_img, 0, 255, cv2.NORM_MINMAX)
+    # return final_img
+    min=float(img.min())
+    max=float(img.max())
+    return np.floor((img-min)/(max-min)*255.0)
     
 # ------------------ THRESHOLDING -------------------------------------
 

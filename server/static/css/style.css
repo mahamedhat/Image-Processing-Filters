@@ -12,24 +12,26 @@ body {
 .container{
     background-color: rgb(238, 238, 238);
     min-width: 98vh;
-    height: 95vh;
+    height: 95%;
     border-radius: 15px;
     display: grid;
     text-align: center;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 0.2fr 1fr 1fr;
     grid-template-areas:
     "imgsection"
-    "filters";
+    "filters"
+    "equalization"
+    "thresh";
     grid-gap: 1rem;
 }
-.container2{
+#container2{
     background-color: rgb(238, 238, 238);
     min-width: 98vh;
-    height: 95vh;
+    height: 95%;
     border-radius: 15px;
     display: grid;
     text-align: center;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 2.66fr 1fr;
     grid-template-areas:
     "Histogram"
     "hybrid";
@@ -39,6 +41,26 @@ body {
 #imgsection{
     grid-area: imgsection;
 }
+#equalization{
+    grid-area: equalization;
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "equalizationimg normalizationimg";
+    grid-gap: 1rem;
+}
+
+#thresh{
+    grid-area: thresh;
+    display: grid;
+    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "global local";
+    grid-gap: 1rem;
+}
+
 #filters{
     grid-area: filters;
 }
@@ -46,11 +68,30 @@ body {
     width: 400px;
     height: auto;
 }
+#normalizationimg{
+    grid-area: display_image1;
+    margin-left: 20px;
 
+}
+#equalizationimg{
+    grid-area: display_image1;
+    margin-left: 60px;
+
+}
+#global{
+    grid-area: display_image1;
+    margin-left: 60px;
+
+}
+#local{
+    grid-area: display_image1;
+    margin-left: 20px;
+
+}
 
 .image{
     display: grid;
-    height: 280px;
+    height: 200px;
     width: 280px;
     border: 1px solid black;
     background-position: center;
@@ -71,10 +112,13 @@ body {
 
 #display_image1{
     grid-area: display_image1;
+    margin-left: 30px;
 }
 
 #output{
     grid-area: output;
+    margin-left: 20px;
+
   }
 
 .import-btn {
@@ -161,9 +205,9 @@ input[type="file"] {
 .filters{
     display: grid;
     text-align: center;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-areas:
-    "noise smoothing Edge";
+    "noise smoothing Edge freqfilter";
     grid-gap: 1rem;
 }
 

@@ -71,17 +71,50 @@
                 </select>
                 </div>
             </div>
+            <div id="freqfilter">
+                <label for="standard-select">Frequency domain filters</label>
+                <div class="select">
+                <select id="freq">
+                    <option value="None">None</option>
+                    <option value="low"> Low pass filter</option>
+                    <option value="high">High pass filter</option>
+                </select>
+                </div>
+            </div>            
             
             
         </div>
+        <div id="equalization">
+           
+            <div class="a">
+                <h3>  Equalization</h3>
+                <div class = "image" id="equalizationimg"></div>
+            </div>
+            <div class="a">
+                <h3>Normalization</h3>
+                <div class = "image" id="normalizationimg"></div>
+            </div>
+        </div>
+
+        <div id="thresh">
+           
+            <div class="a">
+                <h3>  Global Thresholding</h3>
+                <div class = "image" id="global"></div>
+            </div>
+            <div class="a">
+                <h3>Local Thresholding</h3>
+                <div class = "image" id="local"></div>
+            </div>
+        </div>
+
 
     </div>
 
-    <div class="container2">
+    <div class="container" id="container2">
         <div class="Histogram">
             <!-- <button type="button">Show Histogram</button> -->
             <h3>Histogram</h3>
-            <div class = "image2" id="display_image2"></div>
         </div>
         <div id="hybrid">
             <label for="hybrid_img1" class="import-btn2">

@@ -23,6 +23,10 @@ let is_uploaded1 = false
 $('#image_input1').change(function () {
     uploadImage('#upload-image1-form')
     is_uploaded1 = true 
+    update_element(document.getElementById("normalizationimg"),'..//static//assests//normalize.jpg',is_uploaded1)
+    update_element(document.getElementById("equalizationimg"),'..//static//assests//equalize.jpg',is_uploaded1)
+    update_element(document.getElementById("global"),'..//static//assests//global.jpg',is_uploaded1)
+    update_element(document.getElementById("local"),'..//static//assests//local.jpg',is_uploaded1)
     applyfilter()
 
 });
@@ -46,13 +50,20 @@ $('#edgeType').change(function () {
 
 });
 
+$('#freq').change(function () {
+    applyfilter()
+
+});
+
 
 
 //function that takes the element and a url, and updates it 
 let applyfilter = () => {
-    data = [is_uploaded1 , document.getElementById("noiseType").value, document.getElementById("smoothingType").value,document.getElementById("edgeType").value];
+    data = [is_uploaded1 , document.getElementById("noiseType").value, document.getElementById("smoothingType").value, document.getElementById("edgeType").value,document.getElementById("freq").value];
     imgProcessing(data)
     update_element(output, output_path,is_uploaded1)
+
+
 
 }
 
@@ -67,11 +78,25 @@ let uploadImage = (formElement) => {
             processData: false,
             async: false,
             success: function(data) {
-                if (hybrid1 && hybrid2){
-                    let timestamp = new Date().getTime();
-                    let queryString = "?t=" + timestamp;
-                    document.getElementById("hybrid_output").style.backgroundImage = "url(" + "server//static//assests//hybridoutput.jpg" + queryString + ")"
-                }
+ 
+                console.log('Success!');
+            },
+        });
+    
+}
+
+let uploadHybrid= (formElement) => {
+    let form_data = new FormData($(formElement)[0]);
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:5000//uploadHybrid',
+            data: form_data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            async: false,
+            success: function(data) {
+ 
                 console.log('Success!');
             },
         });
@@ -144,20 +169,54 @@ hybrid_img2.addEventListener("change", function(e) {
 
 let hybrid1 = false
 let hybrid2 = false
-let h_path = "server//static//assests//hybridoutput.jpg"
+let h_path = "..//static//assests//hybridoutput.jpg"
 let h = document.getElementById("hybrid_output")
 $('#hybrid_img1').change(function () {
-    uploadImage('#upload-image2-form')
+    uploadHybrid('#upload-image2-form')
     hybrid1 = true 
-
+    data = [hybrid1 , hybrid2];
+    hybrid(data)
+    setTimeout(() => {
+        let timestamp = new Date().getTime();
+        let queryString = "?t=" + timestamp;
+        if(   hybrid1 == true  &&     hybrid2 == true ){
+            h.style.backgroundImage = "url(" + h_path + queryString + ")"};   
+    }, 800)
 });
 
 
 
 $('#hybrid_img2').change(function () {
-    uploadImage('#upload-image3-form')
-    hybrid2 = true 
+    uploadHybrid('#upload-image3-form')
+    hybrid2 = true
+    data = [hybrid1 , hybrid2];
+    hybrid(data)
+    setTimeout(() => {
+        let timestamp = new Date().getTime();
+        let queryString = "?t=" + timestamp;
+        if(   hybrid1 == true  &&     hybrid2 == true ){
+            h.style.backgroundImage = "url(" + h_path + queryString + ")"};   
+    }, 800) 
     
 
 
 });
+
+let hybrid = (formElement) => {
+
+    $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:5000//hybrid',
+        data: JSON.stringify({formElement}),
+        cache: false,
+        dataType: 'json',
+        async: false,
+        contentType: 'application/json',
+        processData: false,
+        success: function(data) {
+            console.log(data
+                );   
+        },
+});
+
+}
