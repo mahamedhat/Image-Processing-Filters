@@ -17,15 +17,25 @@ def uploadImage():
         file1.save(os.path.join(
             'server/static/assests/Image1.jpg'))
         img= cv2.imread('server//static//assests//image1.jpg')
+        fn.rgbHistogram(img)
+        fn.histogram(img)
+        fn.cumm_dist(img)
         img = fn.rgbtogray(img)
+
+       
+        
         norm = fn.normalize(img)
-        cv2.imwrite('server//static//assests//normalize.jpg', norm)
         eq = fn.equalization('server//static//assests//image1.jpg')
-        cv2.imwrite('server//static//assests//equalize.jpg', eq)
         glbl = fn.globalThresholding(img,200)
-        cv2.imwrite('server//static//assests//global.jpg', glbl)
         lcl = fn.localThresholding(img,40)
+
+        cv2.imwrite('server//static//assests//normalize.jpg', norm)
+        cv2.imwrite('server//static//assests//equalize.jpg', eq)
+        cv2.imwrite('server//static//assests//global.jpg', glbl)
         cv2.imwrite('server//static//assests//local.jpg', lcl)
+
+
+       
 
     return []
 

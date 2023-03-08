@@ -17,6 +17,7 @@ from IPython.display import display, Math, Latex
 import matplotlib.image as mpimg
 import random
 import copy
+from scipy.stats import norm
 
 
 
@@ -297,17 +298,77 @@ def histogram(img):
 
     # show the histogram
     plt.hist(flat, bins=50)
+    path = f'server/static/assests/histogram.jpg'
+    plt.savefig(path)
+    plt.close()
+
 
 
 def cumm_dist(img):
     plt.hist(img.ravel(), bins = 256, cumulative = True)
     plt.xlabel('Intensity Value')
     plt.ylabel('Count') 
-    plt.show()
+    path = f'server/static/assests/cum_dist.jpg'
+    plt.savefig(path)
+    plt.close()
 
 
+def rgbHistogram(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    red_hist = cv2.calcHist([img], [0], None, [256], [0, 255])
+    green_hist = cv2.calcHist([img], [1], None, [256], [0, 255])
+    blue_hist = cv2.calcHist([img], [2], None, [256], [0, 255])
+    data=[red_hist,green_hist,blue_hist]
+    mu, std = norm.fit(data) 
 
-    # create our own histogram function
+    plt.subplot(3, 1, 1)
+
+    plt.subplot(3, 1, 1)
+    plt.plot(red_hist, color='r')
+    plt.xlim([0, 255])
+
+    plt.subplot(3, 1, 2)
+    plt.plot(green_hist, color='g')
+    plt.xlim([0, 255])
+
+    plt.subplot(3, 1, 3)
+    plt.plot(blue_hist, color='b')
+    plt.xlim([0, 255])
+
+    plt.tight_layout()
+    path = f'server/static/assests/rgbhistogram.jpg'
+    plt.savefig(path)
+    plt.close()
+
+    plt.plot(red_hist,color="r")
+    plt.plot(green_hist,color="g")
+    plt.plot(blue_hist,color="b")
+    path1 = f'server/static/assests/rgbhistogram1.jpg'
+    plt.savefig(path1)
+    plt.close()
+
+    plt.subplot(3, 1, 1)
+
+    plt.subplot(3, 1, 1)
+    plt.hist(red_hist,color="r")
+    plt.title('red histogram')
+
+    plt.subplot(3, 1, 2)
+    plt.hist(green_hist,color="g")
+    plt.title('green histogram')
+
+    plt.subplot(3, 1, 3)
+    plt.hist(blue_hist,color="b")
+    plt.title('blue histogram')
+
+    plt.tight_layout()  
+    path2 = f'server/static/assests/rgbhistogram2.jpg'
+    plt.savefig(path2)
+    plt.close()
+
+
+# ------------------ EQUALIZATION AND NORMALIZATION -------------------------------------
+# create our own histogram function
 def get_histogram(image, bins):
     # array with size of bins, set to zeros
     histogram = np.zeros(bins)
@@ -326,10 +387,6 @@ def cumsum(a):
     for i in a:
         b.append(b[-1] + i)
     return np.array(b)
-
-
-
-# ------------------ EQUALIZATION AND NORMALIZATION -------------------------------------
 
 def equalization(path):
 

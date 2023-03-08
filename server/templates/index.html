@@ -108,14 +108,6 @@
             </div>
         </div>
 
-
-    </div>
-
-    <div class="container" id="container2">
-        <div class="Histogram">
-            <!-- <button type="button">Show Histogram</button> -->
-            <h3>Histogram</h3>
-        </div>
         <div id="hybrid">
             <label for="hybrid_img1" class="import-btn2">
                 <i class="fa fa-cloud-upload"></i> Upload first image 
@@ -143,11 +135,42 @@
                 <form id="upload-image3-form" method="post" enctype="multipart/form-data">
                     <input id="hybrid_img2" type="file" name="hybrid_img2" accept="image/jpeg, image/png, image/jpg"></input></form>
             </div>
+        </div>
+
+
     </div>
 
-
-
-
+    
+    <div class="plotting">
+        <div class="histogram">
+            <div class="a">
+                <h3>Histogram</h3>
+                <div class = "image2" id="histo"></div>
+            </div>
+            <div class="a">
+                <h3>Distribution Curve</h3>
+                <div class = "image2" id="cum_dist"></div>
+            </div>
+        </div>
+        
+        <div class="rgb">
+            <div>
+                <div class="a">
+                    <h3>RGB Histogram and Distribution Curve</h3>
+                    <div class = "image3" id="rgbpath2"></div>
+                </div>
+            </div>
+            <div class="small_container">
+                <div>
+                    <div class = "image2" id="rgbpath1"></div>
+                </div>
+                <div class = "image2" id="rgbpath"></div>
+                
+            </div>
+        </div>
+    </div>
+       
+    
     <script src="../static/js/main.js"></script>
 </body>
 </html>

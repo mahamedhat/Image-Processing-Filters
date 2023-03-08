@@ -8,39 +8,49 @@ body {
     gap: 15px;
 }
 
-
 .container{
     background-color: rgb(238, 238, 238);
     min-width: 98vh;
-    height: 95%;
+    max-height: 133vh;
     border-radius: 15px;
     display: grid;
     text-align: center;
-    grid-template-rows: 1fr 0.2fr 1fr 1fr;
+    grid-template-rows: 1fr 0.2fr 0.5fr 0.5fr 1fr;
     grid-template-areas:
     "imgsection"
     "filters"
     "equalization"
-    "thresh";
+    "thresh"
+    "hybrid";
     grid-gap: 1rem;
 }
-#container2{
+.a h3{
+    margin-top: 0px;
+    margin-bottom: 13px;
+}
+.plotting{
     background-color: rgb(238, 238, 238);
     min-width: 98vh;
-    height: 95%;
+    max-height: 133vh;
     border-radius: 15px;
     display: grid;
     text-align: center;
-    grid-template-rows: 2.66fr 1fr;
+    grid-template-rows: 1fr  1fr;
     grid-template-areas:
-    "Histogram"
-    "hybrid";
-    grid-gap: 1rem;
+    "histogram"
+    "rgb";
 }
 
 #imgsection{
     grid-area: imgsection;
+    display: flex;
+    flex-direction: column;
 }
+#hybrid{
+    grid-area: hybrid;
+    margin-top: 21px;
+}
+
 #equalization{
     grid-area: equalization;
     display: grid;
@@ -64,28 +74,16 @@ body {
 #filters{
     grid-area: filters;
 }
+
 #image {
     width: 400px;
     height: auto;
 }
-#normalizationimg{
-    grid-area: display_image1;
-    margin-left: 20px;
 
-}
-#equalizationimg{
+#normalizationimg, #equalizationimg, #global, #local{
     grid-area: display_image1;
-    margin-left: 60px;
-
-}
-#global{
-    grid-area: display_image1;
-    margin-left: 60px;
-
-}
-#local{
-    grid-area: display_image1;
-    margin-left: 20px;
+    margin-left: auto;
+    margin-right: auto;
 
 }
 
@@ -98,28 +96,35 @@ body {
     background-size: cover;
     border-radius: 15px;
 }
-
 .image2{
     display: grid;
-    height: 260px;
-    width: 480px;
+    height: 306px;
+    width: 408px;
     border: 1px solid black;
     background-position: center;
     background-size: cover;
-    transform: translateX(140px);
+    border-radius: 15px;
+}
+
+.image3{
+    display: grid;
+    height: 400px;
+    width: 550px;
+    border: 1px solid black;
+    background-position: center;
+    background-size: cover;
     border-radius: 15px;
 }
 
 #display_image1{
     grid-area: display_image1;
-    margin-left: 30px;
 }
 
 #output{
     grid-area: output;
     margin-left: 20px;
 
-  }
+}
 
 .import-btn {
     margin-left: auto;
@@ -128,15 +133,15 @@ body {
     display: block;
     max-width: 25%;
     padding: 0.6rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
     cursor: pointer;
     border: 5px #eee;
     border-radius: 1.5rem;
     background-color: #19345d;
     color: white;
-    font-size: 1rem;
+    font-size: 1.3rem;
     text-align: center;
-  }
+}
 
 .import-btn:hover {
 background-color: #192639;
@@ -147,7 +152,6 @@ color: #eee;
     background-color: #192639;
     color: #eee;
 }
-
 
 button {
     text-align: center;
@@ -177,29 +181,23 @@ input[type="file"] {
     clip: rect(0, 0, 0, 0);
     border: 0;
     font-size: 0.8rem;
-  }
-
-
-  
+}
+ 
 .section-container {
-    display: block;
-    width: 90%;
-    justify-content: center;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0.6rem;
     background-color: #eee;
-    padding: 0.6rem 0.8rem;
-    border-radius: 0.9rem;
-    
+    padding: 0rem 0.8rem;
+    border-radius: 0.9rem;  
 }
+
 #upload-image1-form{
-    display: grid;
+    display: flex;
     text-align: center;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-    "display_image1 output";
-    grid-gap: 1rem;
+    grid-gap: 11rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .filters{
@@ -233,7 +231,6 @@ select{
     transform: translateY(-40px);
 }
 
-
 #upload-image2-form{
     display: grid;
     text-align: center;
@@ -241,24 +238,53 @@ select{
     grid-template-areas:
     "hybrid_image1 hybrid_image2 hybrid_output";
     grid-gap: 1rem;
+    margin-top: 21px;
 }
 
 #hybrid_image1{
     grid-area: hybrid_image1;
     height: 200px;
     width: 200px;
-
-  }
+    margin-left: auto;
+    margin-right: auto;
+}
 
 #hybrid_image2{
     grid-area: hybrid_image2;
     height: 200px;
     width: 200px;
-
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #hybrid_output{
     grid-area: hybrid_output;
     height: 200px;
     width: 200px;
-  }
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.rgb{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 22px;
+    margin: 15px 42px;
+    margin-bottom: 8px;
+}
+.histogram{
+    margin: 3px 42px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.small_container{
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+}

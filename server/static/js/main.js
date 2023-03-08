@@ -2,6 +2,16 @@ const image_input1 = document.querySelector("#image_input1")
 var uploaded_image1 = "";
 let output_path = "../static/assests/output.jpg"
 let output = document.getElementById("output")
+let rgbhistogram = document.getElementById("rgbpath")
+let rgbhistogram_path = "../static/assests/rgbhistogram.jpg"
+let rgbhistogram1 = document.getElementById("rgbpath1")
+let rgbhistogram_path1 = "../static/assests/rgbhistogram1.jpg"
+let rgbhistogram2 = document.getElementById("rgbpath2")
+let rgbhistogram_path2 = "../static/assests/rgbhistogram2.jpg"
+let histogram = document.getElementById("histo")
+let histogram_path = "../static/assests/histogram.jpg"
+let cum_dist = document.getElementById("cum_dist")
+let cum_dist_path = "../static/assests/cum_dist.jpg"
 
 
 image_input1.addEventListener("change", function(e) {
@@ -23,10 +33,17 @@ let is_uploaded1 = false
 $('#image_input1').change(function () {
     uploadImage('#upload-image1-form')
     is_uploaded1 = true 
+    update_element(rgbhistogram,rgbhistogram_path,is_uploaded1)
+    update_element(rgbhistogram1,rgbhistogram_path1,is_uploaded1)
+    update_element(rgbhistogram2,rgbhistogram_path2,is_uploaded1)
+    
+    update_element(histogram,histogram_path,is_uploaded1)
+    update_element(cum_dist,cum_dist_path,is_uploaded1)
     update_element(document.getElementById("normalizationimg"),'..//static//assests//normalize.jpg',is_uploaded1)
     update_element(document.getElementById("equalizationimg"),'..//static//assests//equalize.jpg',is_uploaded1)
     update_element(document.getElementById("global"),'..//static//assests//global.jpg',is_uploaded1)
     update_element(document.getElementById("local"),'..//static//assests//local.jpg',is_uploaded1)
+
     applyfilter()
 
 });
