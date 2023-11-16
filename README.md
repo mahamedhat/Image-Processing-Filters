@@ -1,4 +1,4 @@
-# Task1_cv
+# Computer vision course task
 ## Overview
 our project is an educational website that performs many functions on uploaded images and visualizing the effect of each of these functions by displaying the output and input images to show difference between them.
 ## Features
