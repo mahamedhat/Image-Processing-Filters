@@ -1,6 +1,13 @@
 # Computer vision course task
 ## Overview
 our project is an educational website that performs many functions on uploaded images and visualizing the effect of each of these functions by displaying the output and input images to show difference between them.
+
+## Website 
+
+![Project Image](server/static/images/filters.png)
+![Project Image](server/static/images/equalization.png)
+![Project Image](server/static/images/hybrid.png)
+
 ## Features
  * Add additive noise to any image as: Uniform, Gaussian and salt & pepper noise.
  * Filter the noisy image using low pass filters as: Average, Gaussian and median filters.
